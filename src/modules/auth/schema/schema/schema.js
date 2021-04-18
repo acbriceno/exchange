@@ -44,7 +44,7 @@ input BareBonesUserInput {
 
 enum AccessRole {
   ADMIN
-  CRYPTOUSER
+  CUSER
 }
 
 type Role{

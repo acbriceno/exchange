@@ -5,13 +5,18 @@ const ObjectID = require('mongodb').ObjectID
 const util = require('util')
 const dbToGqlFind = async function (model, payloadList, context) {
   try {
-    const modelIds = payloadList.map(function (id) { return ObjectID(id) })
-    const payload = {
-      _id: { $in: modelIds }
+   let payload = null
+  const modelIds = payloadList.map(function (id) { return ObjectID(id) })
+    if(payloadList.length < 1){
+   	payload = null
+    }else{
+     payload = {
+		  _id: { $in: modelIds }
+		}
     }
     const modelCollectionID = ModelConnection[model]
     const modelDB = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].find(payload)
-    // console.log(modelDB)
+     //console.log(modelDB)
     const modelGQLPayload = await modelDB.map(function (modelType) { return context.datasource()[ModelConnection.properties[modelCollectionID].collection].createObjGQLPayload(modelType) })
     return modelGQLPayload
   } catch (error) {
@@ -46,14 +51,15 @@ const dbFindWithTag = async function (model, param, content, context) {
   try {
     const payload = {}
     payload[param] = content
-    console.log(payload)
+    //console.log(payload)
     const modelCollectionID = ModelConnection[model]
     const modelDB = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].find(payload)
     // const modelDB = await context.datasource().hcorganizations.find(payload)
-    console.log(modelDB)
+    //console.log(modelDB)
+   console.log(modelDB.length)
     if (modelDB.length > 0) {
       const modelGQLPayload = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].createObjGQLPayload(modelDB[0])
-      console.log(modelGQLPayload)
+     // console.log(modelGQLPayload)
       return modelGQLPayload
     }
     return null
@@ -88,7 +94,7 @@ const createDBObj = async function (model, payload, context) {
   const modelCollectionID = ModelConnection[model]
   const modelPayload = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].createObjDBPayload(payload)
   const modelDB = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].create(modelPayload)
-  console.log(modelDB)
+  //console.log(modelDB)
   if (modelDB.insertedCount > 0) {
     const modelGQLPayload = await context.datasource()[ModelConnection.properties[modelCollectionID].collection].createObjGQLPayload(modelDB.ops[0])
     console.log(modelGQLPayload)

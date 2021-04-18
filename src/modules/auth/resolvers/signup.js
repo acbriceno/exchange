@@ -30,20 +30,8 @@ const signup = async (parent, args, context, info) => {
     userArguments.encryptedDataKeys = encryptedDataKeys
     userArguments.twoFactorAuth.code = null
     let createdUser = await DBGQLConnector.createDBObj("USER", userArguments, context)
-    if(userArguments.role.role === "COMMUTER"){
-      let commuter = await DBGQLConnector.createDBObj("COMMUTER", {}, context)
-      const updatePayload = await context.datasource().users.getRoleUpdatePayload(createdUser.id, commuter.id)
-      let update = await DBGQLConnector.dbUpdateOneArray('USER', updatePayload, context)
-      if(update.status){
-        let temp  = createdUser
-        temp.role.id[0] = commuter.id
-        createdUser = temp
-      }
-      
-    }
- 
-   
     return createdUser
+    
   } catch (error) {
     console.error(error)
   }

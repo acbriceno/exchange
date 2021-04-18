@@ -2,13 +2,11 @@
 
 const Role = {
 
-  OPERATOR: 1,
-  COMMUTER: 2,
-  ADMIN: 3,
+  CUSER: 1,
+  ADMIN: 2,
   properties: {
-    1: { name: 'OPERATOR', value: 1, code: 'OPERATOR', collection: 'operators' },
-    2: { name: 'COMMUTER', value: 2, code: 'COMMUTER', collection: 'commuters' },
-    3: { name: 'ADMIN', value: 3, code: 'ADMIN', collection: 'admin' }
+    1: { name: 'CUSER', value: 1, code: 'CUSER', collection: 'users' },
+    2: { name: 'ADMIN', value: 2, code: 'ADMIN', collection: 'admin' }
   }
 
 }

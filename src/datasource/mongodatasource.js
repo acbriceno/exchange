@@ -104,7 +104,7 @@ class MongoDataSource extends DataSource {
     return new Promise((resolve, reject) => {
       try {
         if (!payload) {
-          resolve(this.collection.find())
+          resolve(this.collection.find().toArray())
         } else {
           resolve(this.collection.find(payload).toArray())
         }
